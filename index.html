@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Korean Word HUD</title>
+
+  <!-- Load the styles from our separate CSS file. -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <main class="word-card">
+    <p class="category">DAILY KOREAN · VERB</p>
+
+    <h1 lang="ko">먹다</h1>
+    <p class="meaning">to eat; to have a small meal</p>
+
+    <!-- The browser handles opening and closing this section. -->
+    <details>
+      <summary>Details</summary>
+
+      <div class="expanded-content">
+        <p class="section-label">POLITE FORMS</p>
+
+        <dl class="forms">
+          <div>
+            <dt>Present</dt>
+            <dd lang="ko">먹어요</dd>
+          </div>
+
+          <div>
+            <dt>Past</dt>
+            <dd lang="ko">먹었어요</dd>
+          </div>
+        </dl>
+
+        <p class="section-label">EXAMPLE</p>
+        <p class="korean-example" lang="ko">아침에 빵을 먹어요.</p>
+        <p class="translation">I eat bread in the morning.</p>
+      </div>
+    </details>
+
+    <!-- We will make these buttons work in a later step. -->
+    <footer>
+      <button type="button" disabled>Mark mastered</button>
+      <button type="button" class="next-button" disabled>Next →</button>
+    </footer>
+  </main>
+</body>
+</html>
