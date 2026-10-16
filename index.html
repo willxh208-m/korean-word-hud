@@ -6,19 +6,20 @@
 
   <title>Korean Word HUD</title>
 
-  <!-- Load the styles from our separate CSS file. -->
   <link rel="stylesheet" href="styles.css">
+
+  <!-- Run JavaScript after the HTML has been parsed. -->
+  <script src="app.js" defer></script>
 </head>
 
 <body>
   <main class="word-card">
-    <p class="category">DAILY KOREAN · VERB</p>
+    <p class="category" id="word-category">DAILY KOREAN · VERB</p>
 
-    <h1 lang="ko">먹다</h1>
-    <p class="meaning">to eat; to have a small meal</p>
+    <h1 id="word-korean" lang="ko">먹다</h1>
+    <p class="meaning" id="word-meaning">to eat</p>
 
-    <!-- The browser handles opening and closing this section. -->
-    <details>
+    <details id="word-details">
       <summary>Details</summary>
 
       <div class="expanded-content">
@@ -27,25 +28,30 @@
         <dl class="forms">
           <div>
             <dt>Present</dt>
-            <dd lang="ko">먹어요</dd>
+            <dd id="word-present" lang="ko">먹어요</dd>
           </div>
 
           <div>
             <dt>Past</dt>
-            <dd lang="ko">먹었어요</dd>
+            <dd id="word-past" lang="ko">먹었어요</dd>
           </div>
         </dl>
 
         <p class="section-label">EXAMPLE</p>
-        <p class="korean-example" lang="ko">아침에 빵을 먹어요.</p>
-        <p class="translation">I eat bread in the morning.</p>
+        <p class="korean-example" id="word-example" lang="ko">
+          아침에 빵을 먹어요.
+        </p>
+        <p class="translation" id="word-translation">
+          I eat bread in the morning.
+        </p>
       </div>
     </details>
 
-    <!-- We will make these buttons work in a later step. -->
     <footer>
       <button type="button" disabled>Mark mastered</button>
-      <button type="button" class="next-button" disabled>Next →</button>
+      <button type="button" class="next-button" id="next-button">
+        Next →
+      </button>
     </footer>
   </main>
 </body>
