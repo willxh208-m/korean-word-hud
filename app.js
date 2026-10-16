@@ -105,14 +105,37 @@ function updateWordDetails() {
 // Start each new word with details hidden
 detailsElement.open = false;
 
+// Timer to automatically move to the next word
+// Counted in miliseconds, so 5000 = 5 seconds
+const rotationInterval = 15 * 60 * 1000; // 15 minutes
+
+// Rememeber the timer so we can reset it
+let rotationTimer = null;
+
 // Move to the next word and update the visual card
 function nextWord(){
     currentIndex = (currentIndex + 1) % words.length; // Loop back to the start if at the end
     updateWordDetails();
 }
+// Start a fresh countdown before changing the word
+function scheduleRotation(){
+    // Clear any existing timer
+    clearTimeout(rotationTimer);
 
-// Calls nextWord functino when user clicks the "Next" button
-nextButton.addEventListener("click", nextWord);
+    rotationTimer = setTimeout(() => {
+        nextWord();
+
+        // Schedule the next rotation after changing the word
+        scheduleRotation();
+    }, rotationInterval);
+}
+
+// Calls nextWord functinon when user clicks the "Next" button and resets timer
+nextButton.addEventListener("click", () => {
+    nextWord();
+    scheduleRotation();
+});
 
 // Show the first word when the page loads
 updateWordDetails();
+scheduleRotation();
