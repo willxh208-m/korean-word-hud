@@ -2,7 +2,7 @@ const words = [
     {
         korean: "먹다",
         meaning: "to eat; to have a small meal",
-        category: "DAILY KOREAN · VERB",
+        partOfSpeech: "VERB",
         present: "먹어요",
         past: "먹었어요",
         example: "아침에 빵을 먹어요.",
@@ -11,7 +11,7 @@ const words = [
     {
         korean: "마시다",
         meaning: "to drink",
-        category: "DAILY KOREAN · VERB",
+        partOfSpeech: "VERB",
         present: "마셔요",
         past: "마셨어요",
         example: "저는 물을 마셔요.",
@@ -20,7 +20,7 @@ const words = [
     {
         korean: "좋다",
         meaning: "to be good; to be nice; to be pleasant",
-        category: "DAILY KOREAN · ADJECTIVE",
+        partOfSpeech: "ADJECTIVE",
         present: "좋아요",
         past: "좋았어요",
         example: "이 영화가 좋아요.",
@@ -29,7 +29,7 @@ const words = [
     {
         korean: "보다",
         meaning: "to see; to watch",
-        category: "DAILY KOREAN · VERB",
+        partOfSpeech: "VERB",
         present: "봐요",
         past: "봤어요",
         example: "영화를 봐요.",
@@ -38,7 +38,7 @@ const words = [
     {
         korean: "듣다",
         meaning: "to hear; to listen",
-        category: "DAILY KOREAN · VERB",
+        partOfSpeech: "VERB",
         present: "들어요",
         past: "들었어요",
         example: "음악을 들어요.",
@@ -47,7 +47,7 @@ const words = [
     {
         korean: "주다",
         meaning: "to give",
-        category: "DAILY KOREAN · VERB",
+        partOfSpeech: "VERB",
         present: "줘요",
         past: "줬어요",
         example: "친구에게 선물을 줘요.",
@@ -56,7 +56,7 @@ const words = [
     {
         korean: "크다",
         meaning: "to be big; to be large",
-        category: "DAILY KOREAN · ADJECTIVE",
+        partOfSpeech: "ADJECTIVE",
         present: "커요",
         past: "컸어요",
         example: "이 집이 커요.",
@@ -65,7 +65,7 @@ const words = [
     {
         korean: "작다",
         meaning: "to be small; to be little",
-        category: "DAILY KOREAN · ADJECTIVE",
+        partOfSpeech: "ADJECTIVE",
         present: "작아요",
         past: "작았어요",
         example: "이 가방이 작아요.",
@@ -87,3 +87,32 @@ const translationElement = document.getElementById("word-translation");
 const detailsElement = document.getElementById("word-details");
 const nextButton = document.getElementById("next-button");
 
+// Function to update the displayed word details
+function updateWordDetails() {
+    const currentWord = words[currentIndex];
+
+    categoryElement.textContent = `DAILY KOREAN · ${currentWord.partOfSpeech.toUpperCase()}`;
+
+    koreanElement.textContent = currentWord.korean;
+    meaningElement.textContent = currentWord.meaning;
+    presentElement.textContent = currentWord.present;
+    pastElement.textContent = currentWord.past;
+    exampleElement.textContent = currentWord.example;
+    translationElement.textContent = currentWord.translation;
+
+}
+
+// Start each new word with details hidden
+detailsElement.open = false;
+
+// Move to the next word and update the visual card
+function nextWord(){
+    currentIndex = (currentIndex + 1) % words.length; // Loop back to the start if at the end
+    updateWordDetails();
+}
+
+// Calls nextWord functino when user clicks the "Next" button
+nextButton.addEventListener("click", nextWord);
+
+// Show the first word when the page loads
+updateWordDetails();
