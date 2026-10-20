@@ -1,58 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Korean Word HUD</title>
+    <title>Korean Word HUD</title>
 
-  <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css">
 
-  <!-- Run JavaScript after the HTML has been parsed. -->
-  <script src="app.js" defer></script>
+    <!-- Run JavaScript after the HTML has been parsed. -->
+    <script src="storage.js" defer></script>
+    <script src="app.js" defer></script>
 </head>
 
 <body>
-  <main class="word-card">
-    <p class="category" id="word-category">DAILY KOREAN · VERB</p>
+    <main class="word-card">
+        <p class="category" id="word-category">DAILY KOREAN · VERB</p>
 
-    <h1 id="word-korean" lang="ko">먹다</h1>
-    <p class="meaning" id="word-meaning">to eat</p>
+        <h1 id="word-korean" lang="ko">먹다</h1>
+        <p class="meaning" id="word-meaning">to eat</p>
 
-    <details id="word-details">
-      <summary>Details</summary>
+        <details id="word-details">
+            <summary>Details</summary>
 
-      <div class="expanded-content">
-        <p class="section-label">POLITE FORMS</p>
+            <div class="expanded-content">
+                <p class="section-label">POLITE FORMS</p>
 
-        <dl class="forms">
-          <div>
-            <dt>Present</dt>
-            <dd id="word-present" lang="ko">먹어요</dd>
-          </div>
+                <dl class="forms">
+                    <div>
+                        <dt>Present</dt>
+                        <dd id="word-present" lang="ko">먹어요</dd>
+                    </div>
 
-          <div>
-            <dt>Past</dt>
-            <dd id="word-past" lang="ko">먹었어요</dd>
-          </div>
-        </dl>
+                    <div>
+                        <dt>Past</dt>
+                        <dd id="word-past" lang="ko">먹었어요</dd>
+                    </div>
+                </dl>
 
-        <p class="section-label">EXAMPLE</p>
-        <p class="korean-example" id="word-example" lang="ko">
-          아침에 빵을 먹어요.
+                <p class="section-label">EXAMPLE</p>
+                <p class="korean-example" id="word-example" lang="ko">
+                    아침에 빵을 먹어요.
+                </p>
+                <p class="translation" id="word-translation">
+                    I eat bread in the morning.
+                </p>
+            </div>
+        </details>
+
+        <footer>
+            <button type="button" id="mastered-button">
+                Mark mastered
+            </button>
+            <button type="button" class="next-button" id="next-button">
+                Next →
+            </button>
+            <button type="button" id="restore-button">
+                Restore Mastered Words
+            </button>
+        </footer>
+        <p id="storage-message" role="status" hidden>
+            Progress could not be saved. Changes may be lost when you close the page.
         </p>
-        <p class="translation" id="word-translation">
-          I eat bread in the morning.
+        <p id="completion-message" role="status" hidden>
+            Congratulations! You have mastered all the words in this set.
         </p>
-      </div>
-    </details>
-
-    <footer>
-      <button type="button" disabled>Mark mastered</button>
-      <button type="button" class="next-button" id="next-button">
-        Next →
-      </button>
-    </footer>
-  </main>
+    </main>
 </body>
+
 </html>
