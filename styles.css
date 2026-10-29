@@ -150,9 +150,62 @@ dd {
 
 footer {
     display: flex;
-    justify-content: space-between;
-    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
     margin-top: 24px;
+}
+
+/* Secondary actions on the left, Next pushed to the right as the main action. */
+#mastered-button {
+    order: 1;
+}
+
+#restore-button {
+    order: 2;
+}
+
+.next-button {
+    order: 3;
+    margin-left: auto;
+}
+
+/* Mastered words get their own full-width row under the buttons. */
+#mastered-section {
+    order: 4;
+    flex-basis: 100%;
+    margin-top: 6px;
+    padding-top: 12px;
+    border-top: 1px solid #eceef3;
+}
+
+#mastered-empty {
+    margin: 10px 0 0;
+    color: #747b8b;
+    font-size: 13px;
+}
+
+#mastered-list {
+    margin: 10px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+#mastered-list li {
+    padding: 6px 0;
+    color: #596174;
+    font-size: 13px;
+}
+
+#mastered-list li + li {
+    border-top: 1px solid #f1f2f6;
+}
+
+#mastered-list li span {
+    margin-right: 4px;
+    color: #202432;
+    font-size: 15px;
+    font-weight: 600;
 }
 
 button {
@@ -164,6 +217,7 @@ button {
     font: inherit;
     font-size: 12px;
     font-weight: 600;
+    white-space: nowrap; /* Keep each label on one line. */
     cursor: pointer;
     box-shadow: 0 2px 8px rgb(20 30 50 / 10%);
     transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;

@@ -56,9 +56,14 @@
             <button type="button" class="next-button" id="next-button">
                 Next →
             </button>
-            <button type="button" id="restore-button">
-                Restore Mastered Words
+            <button type="button" id="restore-button" title="Restore all mastered words to the rotation">
+                Reset
             </button>
+            <details id="mastered-section">
+                <summary>Mastered Words</summary>
+                <p id="mastered-empty">No mastered words yet.</p>
+                <ul id="mastered-list"></ul>
+            </details>
         </footer>
         <p id="storage-message" role="status" hidden>
             Progress could not be saved. Changes may be lost when you close the page.

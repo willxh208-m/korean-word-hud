@@ -104,6 +104,8 @@ const masteredButton = document.getElementById("mastered-button");
 const restoreButton = document.getElementById("restore-button");
 const completionMessage = document.getElementById("completion-message");
 const storageMessage = document.getElementById("storage-message");
+const masteredList = document.getElementById("mastered-list");
+const masteredEmpty = document.getElementById("mastered-empty");
 
 // Function to update the displayed word details
 function updateWordDetails() {
@@ -135,7 +137,7 @@ function updateWordDetails() {
 
 // Timer to automatically move to the next word
 // Counted in miliseconds, so 5000 = 5 seconds
-const rotationInterval = 5 * 1000; // 5 seconds
+const rotationInterval = 60 * 1000; // 60 seconds
 
 // Rememeber the timer so we can reset it
 let rotationTimer = null;
@@ -173,6 +175,28 @@ function scheduleRotation(){
         // Schedule the next rotation after changing the word
         scheduleRotation();
     }, rotationInterval);
+}
+
+function renderMasteredList() {
+    masteredList.replaceChildren(); // Clear the current list
+
+    // Keep the original word order, only including mastered words
+    const masteredWordList = words.filter(word => masteredWords.has(word.id));
+
+    // Show the empty message only when nothing has been mastered
+    masteredEmpty.hidden = masteredWordList.length > 0;
+
+    // Add one list item per mastered word, e.g. "먹다 — to eat"
+    for (const word of masteredWordList) {
+        const item = document.createElement("li");
+
+        const korean = document.createElement("span");
+        korean.lang = "ko";
+        korean.textContent = word.korean;
+
+        item.append(korean, ` — ${word.meaning}`);
+        masteredList.append(item);
+    }
 }
 
 // Calls nextWord functinon when user clicks the "Next" button and resets timer
@@ -218,6 +242,8 @@ function hasLearningWordsLeft(){
 function persistProgression() {
     const savedSuccessfully = saveProgression(masteredWords);
     storageMessage.hidden = savedSuccessfully; // Hide the message if save was successful, show it if not
+    // Keep the mastered list in sync whenever the mastered set changes
+    renderMasteredList();
 }
 
 // Updates the app to the completed/mastered state when all words have been learned
@@ -240,27 +266,30 @@ function showCompletion(){
     completionMessage.hidden = false; // Show the completion message
     restoreButton.hidden = false; // Show the restore button
 }
-
+// Function for starting the program, displaying the first unmastered word and starting the rotation timer
 function startLearning(){
     clearTimeout(rotationTimer); // Stop the rotation timer
     rotationTimer = null; // Clear the timer reference
-
+    // Show any mastered words loaded from localStorage
+    renderMasteredList();
+    // Marks the first unmastered word in the list to be displayed first
     const firstUnmasteredIndex = words.findIndex(
         word => !masteredWords.has(word.id)
     );
-
+    // Checks if all words are mastered, if so, show the completion message and return
     if (firstUnmasteredIndex === -1) {
         showCompletion(); // Show completion only when all words are mastered
         return;
     }
-
-    currentIndex = firstUnmasteredIndex; // Set the current index to the first unmastered word
+    // Set the current index to the first unmastered word
+    currentIndex = firstUnmasteredIndex;
+    // Update the visual card with the first unmastered word's details
     updateWordDetails();
+    // Enable the next and mastered buttons for user interaction
     nextButton.disabled = false;
     masteredButton.disabled = false;
-    
-    scheduleRotation(); // Start the rotation timer
-    
+    // Start the rotation timer
+    scheduleRotation();
 }
 
 // Show the first word when the page loads

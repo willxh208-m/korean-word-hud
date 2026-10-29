@@ -21,7 +21,8 @@ function loadProgression() {
 
     // Check the saved data before using it
     if(
-        savedText === null ||
+        typeof savedProgress !== "object" ||
+        savedProgress === null ||
         !Array.isArray(savedProgress.masteredIds) ||
         !savedProgress.masteredIds.every(id => typeof id === "string")
     ) {
