@@ -106,6 +106,7 @@ const completionMessage = document.getElementById("completion-message");
 const storageMessage = document.getElementById("storage-message");
 const masteredList = document.getElementById("mastered-list");
 const masteredEmpty = document.getElementById("mastered-empty");
+const countdownElement = document.getElementById("rotation-countdown");
 
 // Function to update the displayed word details
 function updateWordDetails() {
@@ -142,6 +143,10 @@ const rotationInterval = 60 * 1000; // 60 seconds
 // Rememeber the timer so we can reset it
 let rotationTimer = null;
 
+// The exact time (in ms since epoch) the current rotation timer will fire,
+// so the on-screen countdown is calculated from the real timer, not counted separately
+let rotationDeadline = 0;
+
 // Move to the next word and update the visual card
 function nextWord(){
     // Checks if there are any words left to learn, if not, 
@@ -175,7 +180,35 @@ function scheduleRotation(){
         // Schedule the next rotation after changing the word
         scheduleRotation();
     }, rotationInterval);
+
+    // Remember when this timer will fire and show the fresh countdown right away
+    rotationDeadline = Date.now() + rotationInterval;
+    renderCountdown();
 }
+
+// Show the time left until the next word in the top right corner, e.g. "0:42"
+function renderCountdown() {
+    // Hide the countdown whenever no rotation timer is running (e.g. all words mastered)
+    countdownElement.hidden = rotationTimer === null;
+
+    if (rotationTimer === null) {
+        return;
+    }
+
+    // Round up so the display shows 1:00 at the start and only reaches 0:00 when the word changes
+    const secondsLeft = Math.max(0, Math.ceil((rotationDeadline - Date.now()) / 1000));
+    const minutes = Math.floor(secondsLeft / 60);
+    const seconds = String(secondsLeft % 60).padStart(2, "0");
+    const text = `${minutes}:${seconds}`;
+
+    // Only touch the page when the displayed value actually changes
+    if (countdownElement.textContent !== text) {
+        countdownElement.textContent = text;
+    }
+}
+
+// Re-check the countdown often so it stays within a fraction of a second of the real timer
+setInterval(renderCountdown, 100);
 
 function renderMasteredList() {
     masteredList.replaceChildren(); // Clear the current list

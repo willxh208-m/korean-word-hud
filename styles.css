@@ -27,6 +27,22 @@ body {
     border: 1px solid #e3e6ec;
     border-radius: 20px;
     box-shadow: 0 12px 36px rgb(20 30 50 / 8%);
+
+    /* Lets the countdown be positioned in the card's top right corner. */
+    position: relative;
+}
+
+.countdown {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    margin: 0;
+    color: #747b8b;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    /* Equal-width digits so the timer doesn't jitter as it ticks. */
+    font-variant-numeric: tabular-nums;
 }
 
 .category {
