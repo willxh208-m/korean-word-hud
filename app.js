@@ -138,7 +138,7 @@ function updateWordDetails() {
 
 // Timer to automatically move to the next word
 // Counted in miliseconds, so 5000 = 5 seconds
-const rotationInterval = 60 * 1000; // 60 seconds
+const rotationInterval = 60 * 1000; // 5 minutes
 
 // Rememeber the timer so we can reset it
 let rotationTimer = null;
@@ -256,6 +256,10 @@ masteredButton.addEventListener("click", () => {
 });
 
 restoreButton.addEventListener("click", () => {
+    // Ask before wiping progress, since this can't be undone
+    if (!confirm("Restore all mastered words?")) {
+        return;
+    }
     masteredWords.clear(); // Clear the mastered words set
 
     persistProgression(); // Save the cleared set to localStorage
