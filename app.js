@@ -6,7 +6,7 @@ const words = [
     {
         id: "word_0001",
         korean: "먹다",
-        meaning: "to eat; to have a small meal",
+        meaning: "to eat",
         partOfSpeech: "VERB",
         present: "먹어요",
         past: "먹었어요",
@@ -227,7 +227,19 @@ function renderMasteredList() {
         korean.lang = "ko";
         korean.textContent = word.korean;
 
-        item.append(korean, ` — ${word.meaning}`);
+        // Create a button to restore a single selected word back into rotation
+        const restoreWordButton = document.createElement("button");
+        restoreWordButton.type = "button";
+        restoreWordButton.className = "restore-word-button";
+        restoreWordButton.textContent = "↺";
+        restoreWordButton.title = 'Send ${word.korean} back into rotation';
+        restoreWordButton.setAttribute("aria-label", 'restore ${word.korean}');
+        // Add a click event listener to the restore button
+        restoreWordButton.addEventListener("click", () => {
+            restoreWord(word.id);
+        });
+        // Append the Korean word, its meaning, and the restore button to the list item
+        item.append(korean, ` — ${word.meaning}`, restoreWordButton);
         masteredList.append(item);
     }
 }
@@ -266,6 +278,23 @@ restoreButton.addEventListener("click", () => {
 
     startLearning(); // Restart the learning process
 });
+
+// Restores a single word from the mastered set, updating the UI and localStorage accordingly
+function restoreWord(wordId) {
+    // Check if we are on the completion state before restoring the word
+    const wasCompleted = !hasLearningWordsLeft();
+
+    masteredWords.delete(wordId); // Remove the word from the mastered set
+
+    persistProgression(); // Save the updated mastered words to localStorage
+
+    // Hide the restore button if no words are mastered
+    restoreButton.hidden = masteredWords.size === 0; 
+
+    if (wasCompleted) {
+        startLearning(); // Restart the learning process if we were on the completion state
+    }
+}
 
 // Checks if any words are left to learn/not mastered
 function hasLearningWordsLeft(){

@@ -213,7 +213,7 @@ footer {
     font-size: 13px;
 }
 
-#mastered-list li + li {
+#mastered-list li+li {
     border-top: 1px solid #f1f2f6;
 }
 
@@ -222,6 +222,20 @@ footer {
     color: #202432;
     font-size: 15px;
     font-weight: 600;
+}
+
+.restore-word-button {
+    margin-left: auto;
+    padding: 2px 8px;
+    font-size: 14px;
+    box-shadow: none;
+    background: transparent;
+    color: #747b8b;
+}
+
+.restore-word-button:hover {
+    background: #eaf8ee;
+    color: #1f2a37;
 }
 
 button {
@@ -233,7 +247,8 @@ button {
     font: inherit;
     font-size: 12px;
     font-weight: 600;
-    white-space: nowrap; /* Keep each label on one line. */
+    white-space: nowrap;
+    /* Keep each label on one line. */
     cursor: pointer;
     box-shadow: 0 2px 8px rgb(20 30 50 / 10%);
     transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
