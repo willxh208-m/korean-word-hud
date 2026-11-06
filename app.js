@@ -82,10 +82,111 @@ const words = [
         past: "작았어요",
         example: "이 가방이 작아요.",
         translation: "This bag is small."
+    },
+    {
+        id: "word_0009",
+        korean: "가다",
+        meaning: "to go",
+        partOfSpeech: "VERB",
+        present: "가요",
+        past: "갔어요",
+        example: "저는 학교에 가요.",
+        translation: "I go to school."
+    },
+    {
+        id: "word_0010",
+        korean: "오다",
+        meaning: "to come",
+        partOfSpeech: "VERB",
+        present: "와요",
+        past: "왔어요",
+        example: "친구가 집에 와요.",
+        translation: "My friend comes home."
+    },
+    {
+        id: "word_0011",
+        korean: "하다",
+        meaning: "to do",
+        partOfSpeech: "VERB",
+        present: "해요",
+        past: "했어요",
+        example: "숙제를 해요.",
+        translation: "I do my homework."
+    },
+    {
+        id: "word_0012",
+        korean: "있다",
+        meaning: "to be; to have",
+        partOfSpeech: "VERB",
+        present: "있어요",
+        past: "있었어요",
+        example: "책이 가방에 있어요.",
+        translation: "The book is in the bag."
+    },
+    {
+        id: "word_0013",
+        korean: "없다",
+        meaning: "to not be; to not have",
+        partOfSpeech: "VERB",
+        present: "없어요",
+        past: "없었어요",
+        example: "시간이 없어요.",
+        translation: "I don't have time."
+    },
+    {
+        id: "word_0014",
+        korean: "자다",
+        meaning: "to sleep",
+        partOfSpeech: "VERB",
+        present: "자요",
+        past: "잤어요",
+        example: "밤에 자요.",
+        translation: "I sleep at night."
+    },
+    {
+        id: "word_0015",
+        korean: "읽다",
+        meaning: "to read",
+        partOfSpeech: "VERB",
+        present: "읽어요",
+        past: "읽었어요",
+        example: "책을 읽어요.",
+        translation: "I read a book."
+    },
+    {
+        id: "word_0016",
+        korean: "쓰다",
+        meaning: "to write",
+        partOfSpeech: "VERB",
+        present: "써요",
+        past: "썼어요",
+        example: "이름을 써요.",
+        translation: "I write my name."
+    },
+    {
+        id: "word_0017",
+        korean: "사다",
+        meaning: "to buy",
+        partOfSpeech: "VERB",
+        present: "사요",
+        past: "샀어요",
+        example: "과일을 사요.",
+        translation: "I buy fruit."
+    },
+    {
+        id: "word_0018",
+        korean: "만나다",
+        meaning: "to meet",
+        partOfSpeech: "VERB",
+        present: "만나요",
+        past: "만났어요",
+        example: "친구를 만나요.",
+        translation: "I meet a friend."
     }
 ];
 
-const masteredWords = loadProgression(); // Load the mastered words from localStorage
+// Load the mastered words from localStorage
+const masteredWords = loadProgression();
 
 // Array initializes at 0, meaniing the first word in the array will be displayed first
 let currentIndex = 0;
@@ -111,6 +212,8 @@ const countdownElement = document.getElementById("rotation-countdown");
 // Function to update the displayed word details
 function updateWordDetails() {
     const currentWord = words[currentIndex];
+
+    saveCurrentWordId(currentWord.id);
 
     categoryElement.textContent = `DAILY KOREAN · ${currentWord.partOfSpeech.toUpperCase()}`;
 
@@ -347,8 +450,16 @@ function startLearning(){
         showCompletion(); // Show completion only when all words are mastered
         return;
     }
+
+    // Reads the saved ID from local storage
+    const savedWordId = loadCurrentWordId();
+    // Goes through words and returns the position of the first word whose ID matches
+    const savedIndex = words.findIndex(word => word.id === savedWordId);
+    // Checks BOTH if the word has been found AND it is not been mastered
+    const canResume = savedIndex !== -1 && !masteredWords.has(words[savedIndex].id);
+
     // Set the current index to the first unmastered word
-    currentIndex = firstUnmasteredIndex;
+    currentIndex = canResume ? savedIndex : firstUnmasteredIndex;
     // Update the visual card with the first unmastered word's details
     updateWordDetails();
     // Enable the next and mastered buttons for user interaction
@@ -357,6 +468,8 @@ function startLearning(){
     // Start the rotation timer
     scheduleRotation();
 }
+
+
 
 // Show the first word when the page loads
 startLearning();

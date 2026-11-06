@@ -5,6 +5,9 @@
 // The name of the key used to store the progression data in localStorage
 const progressionKey = "korean-word-hud-progression.v1";
 
+// The name of the key used to store the current word ID in localStorage
+const currentWordKey = "korean-word-hud-current-word.v1";
+
 // Load the progression data from localStorage
 function loadProgression() {
     // Try to retrieve the progression data from localStorage
@@ -53,5 +56,26 @@ function saveProgression(masteredIds){
     } catch (error) {
         console.warn("Could not save data:", error);
         return false; // Indicate that the save failed
+    }
+}
+
+// Save the ID of the current word on screen
+function saveCurrentWordId(wordId){
+    try {
+        localStorage.setItem(currentWordKey, wordId);
+        return true;
+    } catch (error) {
+        console.warn("Could not save current word:", error);
+        return false;
+    }
+}
+
+// Load the ID of the word last seen on screen
+function loadCurrentWordId(){
+    try {
+        return localStorage.getItem(currentWordKey);
+    } catch (error) {
+        console.warn("Could not load current word:", error);
+        return null;
     }
 }
