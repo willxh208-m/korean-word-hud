@@ -11,6 +11,7 @@
 
     <!-- Run JavaScript after the HTML has been parsed. -->
     <script src="storage.js" defer></script>
+    <script src="words.js" defer></script>
     <script src="app.js" defer></script>
 </head>
 
@@ -22,7 +23,8 @@
         <!-- Korean word with a button to hear it pronounced -->
         <div class="word-heading">
             <h1 id="word-korean" lang="ko">먹다</h1>
-            <button type="button" class="speak-button" id="speak-button" aria-label="Play pronunciation" title="Play pronunciation">🔊</button>
+            <button type="button" class="speak-button" id="speak-button" aria-label="Play pronunciation"
+                title="Play pronunciation">🔊</button>
         </div>
         <p class="meaning" id="word-meaning">to eat</p>
 
@@ -30,19 +32,21 @@
             <summary>Details</summary>
 
             <div class="expanded-content">
-                <p class="section-label">POLITE FORMS</p>
+                <div id="word-forms">
+                    <p class="section-label">POLITE FORMS</p>
 
-                <dl class="forms">
-                    <div>
-                        <dt>Present</dt>
-                        <dd id="word-present" lang="ko">먹어요</dd>
-                    </div>
+                    <dl class="forms">
+                        <div>
+                            <dt>Present</dt>
+                            <dd id="word-present" lang="ko">먹어요</dd>
+                        </div>
 
-                    <div>
-                        <dt>Past</dt>
-                        <dd id="word-past" lang="ko">먹었어요</dd>
-                    </div>
-                </dl>
+                        <div>
+                            <dt>Past</dt>
+                            <dd id="word-past" lang="ko">먹었어요</dd>
+                        </div>
+                    </dl>
+                </div>
 
                 <p class="section-label">EXAMPLE</p>
                 <p class="korean-example" id="word-example" lang="ko">
@@ -56,7 +60,7 @@
 
         <footer>
             <button type="button" id="mastered-button">
-                Mark mastered
+                Mastered
             </button>
             <button type="button" class="next-button" id="next-button">
                 Next →
