@@ -208,6 +208,25 @@ const storageMessage = document.getElementById("storage-message");
 const masteredList = document.getElementById("mastered-list");
 const masteredEmpty = document.getElementById("mastered-empty");
 const countdownElement = document.getElementById("rotation-countdown");
+const speakButton = document.getElementById("speak-button");
+
+// Some browsers don't support speech, so only show the speaker button where it works
+const canSpeak = "speechSynthesis" in window;
+
+// Read Korean text aloud using the browser's built-in voice
+function speakKorean(text) {
+    if (!canSpeak) {
+        return;
+    }
+    // Stop anything still being spoken so clicks don't queue up
+    speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "ko-KR"; // Ask for a Korean voice
+    utterance.rate = 0.9; // Slightly slower than normal to make it easier to follow
+
+    speechSynthesis.speak(utterance);
+}
 
 // Hide the meaning so the user tries to recall it before seeing it
 function hideMeaning() {
@@ -239,6 +258,8 @@ function updateWordDetails() {
     meaningElement.textContent = currentWord.meaning;
     // Hide the meaning so the user tries to recall it first
     hideMeaning();
+    // Show the speaker button for real words (if the browser supports speech)
+    speakButton.hidden = !canSpeak;
     presentElement.textContent = currentWord.present;
     pastElement.textContent = currentWord.past;
     exampleElement.textContent = currentWord.example;
@@ -367,6 +388,11 @@ function renderMasteredList() {
     }
 }
 
+// Speak the current Korean word when the speaker button is clicked
+speakButton.addEventListener("click", () => {
+    speakKorean(words[currentIndex].korean);
+});
+
 // Click the hidden meaning to reveal it
 meaningElement.addEventListener("click", revealMeaning);
 
@@ -475,6 +501,8 @@ function showCompletion(){
     meaningElement.textContent = "All words mastered.";
     // The completion text isn't something to recall, so always show it
     revealMeaning();
+    // There's no word to pronounce on the completion screen
+    speakButton.hidden = true;
     // Hide the details section and ensure it's closed
     detailsElement.hidden = true; // Hide the details section
     detailsElement.open = false; // Ensure the details are closed

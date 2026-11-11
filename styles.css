@@ -237,6 +237,26 @@ footer {
     font-weight: 600;
 }
 
+/* Puts the speaker button on the right of the Korean word, centered vertically. */
+.word-heading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Quiet icon button so it doesn't compete with the word itself. */
+.speak-button {
+    padding: 6px 8px;
+    font-size: 20px;
+    line-height: 1;
+    background: transparent;
+    box-shadow: none;
+}
+
+.speak-button:hover {
+    background: #eef2ff;
+}
+
 .restore-word-button {
     margin-left: auto;
     padding: 2px 8px;
