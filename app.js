@@ -209,6 +209,24 @@ const masteredList = document.getElementById("mastered-list");
 const masteredEmpty = document.getElementById("mastered-empty");
 const countdownElement = document.getElementById("rotation-countdown");
 
+// Hide the meaning so the user tries to recall it before seeing it
+function hideMeaning() {
+    meaningElement.classList.add("is-hidden");
+    meaningElement.setAttribute("role", "button");
+    meaningElement.tabIndex = 0;
+    meaningElement.setAttribute("aria-label", "Meaning hidden. Activate to reveal.");
+    meaningElement.title = "Click or press Space to reveal";
+}
+
+// Show the meaning and turn it back into plain text
+function revealMeaning() {
+    meaningElement.classList.remove("is-hidden");
+    meaningElement.removeAttribute("role");
+    meaningElement.removeAttribute("tabindex");
+    meaningElement.removeAttribute("aria-label");
+    meaningElement.removeAttribute("title");
+}
+
 // Function to update the displayed word details
 function updateWordDetails() {
     const currentWord = words[currentIndex];
@@ -219,6 +237,8 @@ function updateWordDetails() {
 
     koreanElement.textContent = currentWord.korean;
     meaningElement.textContent = currentWord.meaning;
+    // Hide the meaning so the user tries to recall it first
+    hideMeaning();
     presentElement.textContent = currentWord.present;
     pastElement.textContent = currentWord.past;
     exampleElement.textContent = currentWord.example;
@@ -347,6 +367,34 @@ function renderMasteredList() {
     }
 }
 
+// Click the hidden meaning to reveal it
+meaningElement.addEventListener("click", revealMeaning);
+
+// Pressing Enter while the hidden meaning has focus also reveals it
+meaningElement.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+        revealMeaning();
+    }
+});
+
+// Pressing Space anywhere reveals the meaning while it's hidden
+document.addEventListener("keydown", (event) => {
+    // Only react to the Space bar
+    if (event.code !== "Space") {
+        return;
+    }
+    // Once the meaning is showing, let Space behave normally
+    if (!meaningElement.classList.contains("is-hidden")) {
+        return;
+    }
+    // Stop Space from scrolling the page or pressing a button
+    event.preventDefault();
+    // Remove focus from a button so it isn't clicked when Space is released
+    document.activeElement.blur();
+
+    revealMeaning();
+});
+
 // Calls nextWord functinon when user clicks the "Next" button and resets timer
 nextButton.addEventListener("click", () => {
     nextWord();
@@ -425,6 +473,8 @@ function showCompletion(){
     categoryElement.textContent = "DAILY KOREAN · COMPLETED";
     koreanElement.textContent = "완료!";
     meaningElement.textContent = "All words mastered.";
+    // The completion text isn't something to recall, so always show it
+    revealMeaning();
     // Hide the details section and ensure it's closed
     detailsElement.hidden = true; // Hide the details section
     detailsElement.open = false; // Ensure the details are closed

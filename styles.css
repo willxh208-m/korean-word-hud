@@ -63,6 +63,19 @@ h1 {
     margin: 6px 0 24px;
     color: #596174;
     font-size: 20px;
+    transition: filter 0.25s ease;
+}
+
+.meaning.is-hidden {
+    filter: blur(6px);
+    cursor: pointer;
+    user-select: none;
+}
+
+.meaning:focus-visible {
+    outline: 2px solid #5464d9;
+    outline-offset: 4px;
+    border-radius: 6px;
 }
 
 summary {
