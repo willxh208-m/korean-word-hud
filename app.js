@@ -5,8 +5,47 @@
 // Load the mastered words from localStorage
 const masteredWords = loadProgression();
 
-// Array initializes at 0, meaniing the first word in the array will be displayed first
+// Index (in the words array) of the word on screen; set by startLearning()
 let currentIndex = 0;
+
+// The random order words are shown in, stored as indexes into the words array
+let shuffledOrder = [];
+// Where we are in shuffledOrder
+let orderPosition = 0;
+
+// Shuffles an array in place using the Fisher–Yates shuffle,
+// which gives every possible order an equal chance
+function shuffle(array) {
+    // Walk backwards, swapping each item with a random item at or before it
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+// Creates a new random order containing every word once
+function createShuffledOrder() {
+    // [0, 1, 2, ...] — one index per word — then shuffle it
+    shuffledOrder = shuffle(words.map((word, index) => index));
+    orderPosition = 0;
+}
+
+// Moves a word to the front of the order, so the round starts with it
+function moveToFront(wordIndex) {
+    const position = shuffledOrder.indexOf(wordIndex);
+    [shuffledOrder[0], shuffledOrder[position]] = [shuffledOrder[position], shuffledOrder[0]];
+}
+
+// Starts a new round once every word has been shown
+function startNewRound() {
+    createShuffledOrder();
+    // Don't show the same word twice in a row across the round boundary
+    if (shuffledOrder.length > 1 && shuffledOrder[0] === currentIndex) {
+        const last = shuffledOrder.length - 1;
+        [shuffledOrder[0], shuffledOrder[last]] = [shuffledOrder[last], shuffledOrder[0]];
+    }
+}
 
 // Find the HTML elements by their IDs to update
 const categoryElement = document.getElementById("word-category");
@@ -126,7 +165,12 @@ function nextWord(){
     }
     // Uses a do-while loop to ensure that the next word is not a mastered word
     do {
-        currentIndex = (currentIndex + 1) % words.length; // Loop back to the start if at the end
+        orderPosition++;
+        // After every word has been shown, reshuffle and start a new round
+        if (orderPosition >= shuffledOrder.length) {
+            startNewRound();
+        }
+        currentIndex = shuffledOrder[orderPosition];
     // Skip mastered words
     } while (masteredWords.has(words[currentIndex].id));
     // Once a non-mastered word is found, update the visual card with the new word's details
@@ -409,8 +453,17 @@ function startLearning(){
     // Checks BOTH if the word has been found AND it is not been mastered
     const canResume = savedIndex !== -1 && !masteredWords.has(words[savedIndex].id);
 
-    // Set the current index to the first unmastered word
-    currentIndex = canResume ? savedIndex : firstUnmasteredIndex;
+    // Shuffle the words so they're shown in a random order
+    createShuffledOrder();
+    // Without a saved word to resume, start at a random unmastered word
+    const randomUnmasteredIndex = shuffledOrder.find(
+        index => !masteredWords.has(words[index].id)
+    );
+
+    // Resume at the saved word, or start at the random unmastered word
+    currentIndex = canResume ? savedIndex : randomUnmasteredIndex;
+    // Put the starting word first so the shuffled round continues from it
+    moveToFront(currentIndex);
     // Update the visual card with the first unmastered word's details
     updateWordDetails();
     // Enable the next and mastered buttons for user interaction
