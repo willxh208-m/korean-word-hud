@@ -65,6 +65,7 @@ const masteredList = document.getElementById("mastered-list");
 const masteredEmpty = document.getElementById("mastered-empty");
 const countdownElement = document.getElementById("rotation-countdown");
 const speakButton = document.getElementById("speak-button");
+const exampleSpeakButton = document.getElementById("example-speak-button");
 const masteredSection = document.getElementById("mastered-section");
 const formsElement = document.getElementById("word-forms");
 
@@ -118,6 +119,8 @@ function updateWordDetails() {
     hideMeaning();
     // Show the speaker button for real words (if the browser supports speech)
     speakButton.hidden = !canSpeak;
+    // Same for the example sentence's speaker button inside Details
+    exampleSpeakButton.hidden = !canSpeak;
     // Creates a boolean that checks if current word has a present and past form
     const hasForms = Boolean(currentWord.present && currentWord.past);
     // Hides the forms section if the current word has no forms
@@ -260,6 +263,11 @@ function renderMasteredList() {
 // Speak the current Korean word when the speaker button is clicked
 speakButton.addEventListener("click", () => {
     speakKorean(words[currentIndex].korean);
+});
+
+// Speak the current word's example sentence when its speaker button is clicked
+exampleSpeakButton.addEventListener("click", () => {
+    speakKorean(words[currentIndex].example);
 });
 
 // Click the hidden meaning to reveal it

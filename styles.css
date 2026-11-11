@@ -257,6 +257,29 @@ footer {
     background: #eef2ff;
 }
 
+/* Puts the speaker button on the right of the example sentence. */
+.example-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+/* The sentence's own bottom margin moves to .example-line so the button stays centered. */
+.example-line .korean-example {
+    margin: 0;
+}
+
+/* Smaller speaker so it matches the sentence's size, not the big heading. */
+.speak-button-small {
+    padding: 4px 6px;
+    font-size: 15px;
+    /* Nudge up slightly: the emoji sits low in its box, so true centering looks off.
+       Uses top instead of transform so the hover lift still works. */
+    position: relative;
+    top: -2px;
+}
+
 .restore-word-button {
     margin-left: auto;
     padding: 2px 8px;
