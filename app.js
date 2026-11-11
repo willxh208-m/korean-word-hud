@@ -209,6 +209,7 @@ const masteredList = document.getElementById("mastered-list");
 const masteredEmpty = document.getElementById("mastered-empty");
 const countdownElement = document.getElementById("rotation-countdown");
 const speakButton = document.getElementById("speak-button");
+const masteredSection = document.getElementById("mastered-section");
 
 // Some browsers don't support speech, so only show the speaker button where it works
 const canSpeak = "speechSynthesis" in window;
@@ -419,6 +420,54 @@ document.addEventListener("keydown", (event) => {
     document.activeElement.blur();
 
     revealMeaning();
+});
+
+// Keyboard shortcuts for the main actions
+document.addEventListener("keydown", (event) => {
+    // Leave browser and system shortcuts (like Cmd+R) alone
+    if (event.metaKey || event.ctrlKey || event.altKey) {
+        return;
+    }
+    // Holding a key down should only trigger the action once
+    if (event.repeat) {
+        return;
+    }
+    // Ignore keys while a Korean (or other) keyboard is still building a character
+    if (event.isComposing) {
+        return;
+    }
+
+    // event.code is the physical key, so shortcuts still work with a Korean keyboard layout
+    switch (event.code) {
+        case "ArrowRight":
+        case "KeyN":
+            // Clicking the real button reuses its logic; a disabled button ignores the click
+            nextButton.click();
+            break;
+        case "KeyM":
+            masteredButton.click();
+            break;
+        case "KeyS":
+            // The speaker button is hidden on the completion screen and in unsupported browsers
+            if (!speakButton.hidden) {
+                speakButton.click();
+            }
+            break;
+        case "KeyD":
+            // Details are hidden on the completion screen
+            if (!detailsElement.hidden) {
+                detailsElement.open = !detailsElement.open;
+            }
+            break;
+        case "KeyL":
+            masteredSection.open = !masteredSection.open;
+            break;
+        default:
+            // Not one of our shortcuts, so let the key behave normally
+            return;
+    }
+    // Stop the key's default behavior (e.g. the right arrow scrolling the page)
+    event.preventDefault();
 });
 
 // Calls nextWord functinon when user clicks the "Next" button and resets timer
